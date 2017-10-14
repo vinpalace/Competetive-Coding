@@ -10,7 +10,6 @@ struct node{
 typedef struct node NODE;
 
 
-
 NODE* createNode(int data)
 {
     NODE* recent;
@@ -30,7 +29,11 @@ NODE* createList()
     temp->next = createNode(6);
     temp = temp -> next;
 
-    temp ->next = createNode(7);
+    NODE* bait;
+
+    bait = createNode(7);
+
+    temp ->next = bait;
     temp = temp -> next;
 
     temp -> next = createNode(8);
@@ -42,77 +45,58 @@ NODE* createList()
     temp -> next = createNode(10);
     temp = temp-> next;
 
+    //temp->next = bait;
+
     return head;
 
 }
-
-
 
 void printList(NODE* head)
 {
     while(head != NULL)
     {
         printf("%d->", head->data);
+
+
         head = head->next;
     }
 }
 
-
-NODE* rotateLinkedList(NODE *head, int k)
+int detectLoop(NODE* head)
 {
-    if(k == 0)
-    return head;
+    NODE* walker, *jumper;
 
-    NODE* current = head;
+    walker = head;
+    jumper = head;
 
-    int count = 1;
 
-    while(count < k && current != NULL)
+    while(walker && jumper)
     {
-        current = current -> next;
-        count++;
+        walker = walker -> next;
+        jumper = jumper ->next -> next;
+
+        if(walker == jumper)
+            return 1;
+
     }
 
-    if(current == NULL)
-        return head;
-
-
-    NODE* kthNode = current;
-
-    while(current->next != NULL)
-        current = current->next;
-
-
-    current->next = head;
-
-
-    head = kthNode->next;
-
-    kthNode->next = NULL;
-
-    return head;
+    return 0;
 }
 
-
-void rotateLinkedListTry(NODE **head_ref, int k)
-{
-
-}
 
 
 int main()
 {
-
     NODE* head;
 
     head = createList();
+    int boolean;
 
-    printList(head);
+    boolean = detectLoop(head);
 
-    printf("\n");
+    if(boolean == 1)
+        printf("\nLoop found\n");
+    else
+        printf("\nThis LL is safe\n");
 
-    head = rotateLinkedList(head, 4);
-    printList(head);
-
-    return 0;
 }
