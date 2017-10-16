@@ -151,7 +151,6 @@ int main()
     printList(head1);
     printf("\n");
     printList(head2);
-    
     int value;
     value = detectIntersectionImproved(head1, head2);
 
