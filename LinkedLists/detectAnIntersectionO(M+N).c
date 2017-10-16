@@ -99,16 +99,64 @@ int getLength(NODE* head)
     return count;
 }
 
+int detector(int d, NODE* head1, NODE* head2);
+
 int detectIntersectionImproved(NODE* head1, NODE* head2)
 {
     int length1 = getLength(head1);
     int length2 = getLength(head2);
-
+    int value;
     int d;
 
     if(length1 > length2)
     {
         d = length1 - length2;
-        
+        value = detector(d, head1, head2);
+
     }
+    else
+    {
+        d = length2 - length1;
+        value = detector(d, head1, head2);
+    }
+
+    return value;
+}
+
+int detector(int d, NODE* head1, NODE* head2)
+{
+    int i;
+    for(i = 0; i < d; i++)
+        head1 = head1 -> next;
+
+    while(head1 && head2)
+    {
+        if(head1 == head2)
+            return head1->data;
+
+        head1 = head1 -> next;
+        head2 = head2 -> next;
+    }
+
+    return -1;
+}
+
+int main()
+{
+    NODE* head1, *head2;
+
+    head1 = createList();
+    head2 = createList2();
+
+    printList(head1);
+    printf("\n");
+    printList(head2);
+    
+    int value;
+    value = detectIntersectionImproved(head1, head2);
+
+    printf("\n%d",value);
+    printf("\n");
+
+    return 0;
 }
